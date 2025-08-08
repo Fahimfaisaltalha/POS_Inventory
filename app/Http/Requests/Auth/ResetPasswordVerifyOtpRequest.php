@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Auth;
 
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use App\Rules\Auth\ResetPasswordOtpVerifyRule;
 
 class ResetPasswordVerifyOtpRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class ResetPasswordVerifyOtpRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,12 @@ class ResetPasswordVerifyOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|email|exists:users,email',
+            'otp'=>[
+                'required',
+                'digits:6',
+                new ResetPasswordOtpVerifyRule($this->email)
+            ]
         ];
     }
         protected function failedValidation(Validator $validator)

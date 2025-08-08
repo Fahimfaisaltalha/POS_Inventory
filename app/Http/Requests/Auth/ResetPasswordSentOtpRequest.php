@@ -13,7 +13,7 @@ class ResetPasswordSentOtpRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class ResetPasswordSentOtpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|string|email|max:128|exists:users,email'
         ];
     }
         protected function failedValidation(Validator $validator)

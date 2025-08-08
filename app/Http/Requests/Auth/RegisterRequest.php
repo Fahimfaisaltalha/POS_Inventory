@@ -37,7 +37,7 @@ class RegisterRequest extends FormRequest
             'success' => false,
             'message' => $validator->errors()->all(),
             'data' => null
-        ], 200));
+        ], 422));
     }
     }
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Js;
 
 class JwtToken
 {
-    public static function createToken(array $userData, int $exp):JsonResponse
+    public static function createToken(array $userData, int $exp):array
     {
         try{
         $key=config('jwt.jwt_key');
@@ -21,44 +21,44 @@ class JwtToken
             'exp'=>$exp
         ];
         $token= JWT::encode($payload, $key, 'HS256');
-        return response()->json([
+        return [
             'error' => false,
             'token' => $token
 
-        ]);
+        ];
         }catch(\Exception $e){
             Log::critical($e->getMessage().''. $e->getFile() . ':' . $e->getLine());
-            return response()->json([
+            return [
                 'error'=> true,
                 'message'=> 'Failed to create JWT token'
-            ]);
+            ];
         }
     }
 
-    public static function verifyToken(string $token):JsonResponse
+    public static function verifyToken(string $token):array
     {
         try{
             $key = config('jwt.jwt_key');
             if(!$token){
-                return response()->json([
+                return [
                     'error' => true,
                     'payload'=>[],
                     'message' => 'Token is required'
-                ]);
+                ];
             }
             $payload= JWT::decode($token, new Key(($key),'HS256'));
-            return response()->json([
+            return [
                 'error' => false,
                 'data' => $payload,
                 'message'=>'Data found Successfully'
-            ]);
+            ];
         }catch(\Exception $e){
             Log::critical($e->getMessage().''. $e->getFile() . ':' . $e->getLine());
-            return response()->json([
+            return [
                 'error'=> true,
                 'payload'=>[],
                 'message'=> 'Failed to verify JWT token'
-            ]);
+            ];
         }
     }
 

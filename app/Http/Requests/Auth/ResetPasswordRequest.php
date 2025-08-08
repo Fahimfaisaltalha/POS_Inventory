@@ -3,8 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
+
 
 
 class ResetPasswordRequest extends FormRequest
@@ -25,15 +24,8 @@ class ResetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'password' => 'required|string|confirmed',
         ];
     }
-        protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => $validator->errors()->all(),
-            'data' => null
-        ], 200));
-    }
+
 }

@@ -7,3 +7,4 @@ use Illuminate\Support\Facades\Route;
 Route::post('register',[RegisterController::class,'register']);
 Route::post('password/reset/send/otp',[ResetPasswordController::class,'sendOtp']);
 Route::post('password/reset/verify/otp',[ResetPasswordController::class,'verifyOtp']);
+Route::post('password/reset/',[ResetPasswordController::class,'resetPassword']);

@@ -11,55 +11,54 @@ use Illuminate\Support\Js;
 
 class JwtToken
 {
-    public static function createToken(array $userData, int $exp):array
+    public static function createToken(array $userData, int $exp): array
     {
-        try{
-        $key=config('jwt.jwt_key');
-        $payload=$userData+[
-            'iss'=>'PosInventoryApp',
-            'iat'=>time(),
-            'exp'=>$exp
-        ];
-        $token= JWT::encode($payload, $key, 'HS256');
-        return [
-            'error' => false,
-            'token' => $token
-
-        ];
-        }catch(\Exception $e){
-            Log::critical($e->getMessage().''. $e->getFile() . ':' . $e->getLine());
+        try {
+            $key = config('jwt.jwt_key');
+            $payload = $userData + [
+                'iss' => 'PosInventoryApp',
+                'iat' => time(),
+                'exp' => $exp
+            ];
+            $token = JWT::encode($payload, $key, 'HS256');
             return [
-                'error'=> true,
-                'message'=> 'Failed to create JWT token'
+                'error' => false,
+                'token' => $token
+
+            ];
+        } catch (\Exception $e) {
+            Log::critical($e->getMessage() . '' . $e->getFile() . ':' . $e->getLine());
+            return [
+                'error' => true,
+                'message' => 'Failed to create JWT token'
             ];
         }
     }
 
-    public static function verifyToken(string $token):array
+    public static function verifyToken(string $token): array
     {
-        try{
+        try {
             $key = config('jwt.jwt_key');
-            if(!$token){
+            if (!$token) {
                 return [
                     'error' => true,
-                    'payload'=>[],
+                    'data' => null,
                     'message' => 'Token is required'
                 ];
             }
-            $payload= JWT::decode($token, new Key(($key),'HS256'));
+            $payload = JWT::decode($token, new Key(($key), 'HS256'));
             return [
                 'error' => false,
                 'data' => $payload,
-                'message'=>'Data found Successfully'
+                'message' => 'Data found Successfully'
             ];
-        }catch(\Exception $e){
-            Log::critical($e->getMessage().''. $e->getFile() . ':' . $e->getLine());
+        } catch (\Exception $e) {
+            Log::critical($e->getMessage() . '' . $e->getFile() . ':' . $e->getLine());
             return [
-                'error'=> true,
-                'payload'=>[],
-                'message'=> 'Failed to verify JWT token'
+                'error' => true,
+                'data' => null,
+                'message' => 'Failed to verify JWT token'
             ];
         }
     }
-
 }

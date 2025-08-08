@@ -15,3 +15,4 @@ Route::post('password/reset/',[ResetPasswordController::class,'resetPassword']);
 Route::post('login',[LoginController::class,'login']);
 
 Route::get('profile',[ProfileController::class,'profile'])->middleware(JwtTokenVerify::class);
+Route::post('logout',[LogoutController::class,'logout'])->middleware(JwtTokenVerify::class);

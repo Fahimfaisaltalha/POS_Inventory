@@ -26,7 +26,9 @@ class LoginController extends Controller
 
             $userData = [
                 'email' => $user->email,
-                'id' => $user->id
+                'id' => $user->id,
+                'role' => $user->role,
+                'image' => $user->profile->avatar_url,
             ];
 
             $exp = time() + (3600 * 24); // 24 hours from now
@@ -42,6 +44,7 @@ class LoginController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Login Success',
+                'user_data'=>$userData
             ], 200)->cookie('token', $token['token'], 1440); // 1440 minutes = 24 hours
 
         } catch (\Exception $e) {

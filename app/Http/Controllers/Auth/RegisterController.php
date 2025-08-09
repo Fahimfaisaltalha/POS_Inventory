@@ -29,10 +29,11 @@ class RegisterController extends Controller
 
             Profile::create($profileData);
 
+
             return response()->json([
                 'success' => true,
                 'message' => 'User registered successfully',
-                'data' =>$user
+                'data' => $user
             ], 201);
 
 

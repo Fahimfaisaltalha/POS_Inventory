@@ -28,16 +28,13 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:128|unique:users',
             'password' => 'required|string|confirmed',
+             'role'=>'required',
+            'phone'=>'required',
+            'address'=>'required',
+            'avatar'=>'required',
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => $validator->errors()->all(),
-            'data' => null
-        ], 422));
-    }
+
     }
 
